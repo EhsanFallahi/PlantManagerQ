@@ -1,5 +1,6 @@
 package com.fallahiehsan.plantmanager
 
+import com.fallahiehsan.plantmanager.dto.Plant
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -23,6 +24,12 @@ class ExampleUnitTest {
     @Test
     fun addThreeAndFour_equalToSix(){
         assertEquals(7,3+4)
+    }
+
+    @Test
+    fun confirmRose_outputRose(){
+        val plant: Plant =Plant("cercis","canadies","rose")
+        assertEquals("rose",plant.toString())
     }
 
 }
