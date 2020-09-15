@@ -32,4 +32,9 @@ class ExampleUnitTest {
         assertEquals("rose",plant.toString())
     }
 
+    @Test
+    fun addThreeAndOne_NotCorrect(){
+        assertEquals(2,3+1)
+    }
+
 }
