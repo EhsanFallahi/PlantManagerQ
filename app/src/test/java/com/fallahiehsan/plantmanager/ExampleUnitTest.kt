@@ -1,5 +1,6 @@
 package com.fallahiehsan.plantmanager
 
+import com.fallahiehsan.plantmanager.dto.Plant
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -27,7 +28,7 @@ class ExampleUnitTest {
 
     @Test
     fun confirmRose_outputRose(){
-        val plant:Plant=Plant("cercis","canadies","ros")
+        val plant: Plant =Plant("cercis","canadies","rose")
         assertEquals("rose",plant.toString())
     }
 
