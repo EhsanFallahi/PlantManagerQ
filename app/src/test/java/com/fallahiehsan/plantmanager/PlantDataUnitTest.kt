@@ -1,21 +1,16 @@
 package com.fallahiehsan.plantmanager
 
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.fallahiehsan.plantmanager.dto.Plant
-import com.fallahiehsan.plantmanager.service.PlantService
+import com.fallahiehsan.plantmanager.repository.PlantService
 import com.fallahiehsan.plantmanager.ui.main.MainViewModel
-import io.mockk.confirmVerified
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.rules.TestRule
-import org.mockito.AdditionalMatchers.not
-import org.mockito.AdditionalMatchers.or
 
 class PlantDataUnitTest {
 
@@ -33,40 +28,16 @@ class PlantDataUnitTest {
 
     @Test
     fun searchForRedbud_ReturnsRedbud(){
-        givenAFeedOfMockedPlantDataAreAvailable()
+        givenAFeedOfPlantDataAreAvailable()
         whenSearchForRedbud()
         thenResultContainsRedbud()
-        thebVerifyFunctionsInvoked()
-    }
+     }
 
-    private fun thebVerifyFunctionsInvoked() {
-        verify { plantService.fetchPlants("Redbud") }
-        confirmVerified(plantService)
-    }
 
-    private fun givenAFeedOfMockedPlantDataAreAvailable() {
+    private fun givenAFeedOfPlantDataAreAvailable() {
         mvm=MainViewModel()
-        createMockData()
     }
 
-    private fun createMockData() {
-        var allPlantService=MutableLiveData<ArrayList<Plant>>()
-        var allPlants=ArrayList<Plant>()
-
-        var redbud=Plant("Cercis","canadecsis","Eastern Redbud")
-        allPlants.add(redbud)
-
-        var redOak=Plant("Quercus","rubra","Red Oak")
-        allPlants.add(redOak)
-
-        var whiteOak=Plant("Quercus","alba","White Oak")
-        allPlants.add(whiteOak)
-
-        allPlantService.postValue(allPlants)
-        every{plantService.fetchPlants(or("Redbud","Quercus"))} returns allPlantService
-        every{plantService.fetchPlants(not(or("Redbud","Quercus")))} returns MutableLiveData<ArrayList<Plant>>()
-        mvm.plantService=plantService
-    }
 
     private fun whenSearchForRedbud() {
         mvm.fetchPlants("Redbud")
@@ -75,22 +46,23 @@ class PlantDataUnitTest {
     private fun thenResultContainsRedbud() {
         var redbudFound=false
 
-        mvm.plants.observeForever(){
+        mvm.plants.observeForever(){ it ->
+            Log.i("plantSize","${it.size}")
             assertNotNull(it)
             assertTrue(it.size>0)
             it.forEach{
-                if(it.genus=="Cercis" && it.species=="canadecsis" && it.common.contains("Eastern Redbud")){
+                if( it.common.contains("Redbud")){
                     redbudFound=true
                 }
             }
         }
 
-        assertTrue(redbudFound)
+                assertTrue(redbudFound)
     }
 
     @Test
     fun searchForGarbage_returnsNotThing(){
-        givenAFeedOfMockedPlantDataAreAvailable()
+        givenAFeedOfPlantDataAreAvailable()
         whenSearchForGarbage()
         thenIGetZeroResult()
     }
