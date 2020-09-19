@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.fallahiehsan.plantmanager.dto.Plant
 import com.fallahiehsan.plantmanager.service.PlantService
 import com.fallahiehsan.plantmanager.ui.main.MainViewModel
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -34,6 +36,12 @@ class PlantDataUnitTest {
         givenAFeedOfMockedPlantDataAreAvailable()
         whenSearchForRedbud()
         thenResultContainsRedbud()
+        thebVerifyFunctionsInvoked()
+    }
+
+    private fun thebVerifyFunctionsInvoked() {
+        verify { plantService.fetchPlants("Redbud") }
+        confirmVerified(plantService)
     }
 
     private fun givenAFeedOfMockedPlantDataAreAvailable() {
